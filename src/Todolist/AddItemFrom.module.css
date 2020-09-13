@@ -1,0 +1,11 @@
+.errorMsg {
+    color: red;
+}
+
+.error {
+    border: 1px solid fuchsia;
+}
+
+.done {
+    opacity: 0.4;
+}

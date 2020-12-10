@@ -1,9 +1,6 @@
-import React, {InputHTMLAttributes, useState} from "react";
-import style from "./Button.module.css";
-import cn from "classnames";
-import {FilterValuesType} from "../../App";
-import {Button, IconButton} from "@material-ui/core";
-import {Add, AddBox} from "@material-ui/icons";
+import React from "react";
+import {Button} from "@material-ui/core";
+import {FilterValuesType} from "../../redux/todolists-reducer";
 
 type PropsButtonType = {
     text?: string

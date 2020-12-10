@@ -1,37 +1,40 @@
-import React, {ChangeEvent} from "react";
+import React, {ChangeEvent, useCallback} from "react";
 import {Checkbox} from "@material-ui/core";
 import {EditableSpan} from "../../EditableSpan";
 import {ButtonComponent} from "../../common/Button/ButtonComponent";
 import {Delete} from "@material-ui/icons";
-import {TaskType} from "../../App";
+import {TaskStatuses, TaskType} from "../../api/todolists-api";
 
 type TaskPropsType = {
     id: string
     tasks: TaskType
     removeTask: (taskId: string, todolistId: string) => void
-    changeTaskStatus: (id: string, isDone: boolean, todoListId: string) => void
+    changeTaskStatus: (id: string, status: TaskStatuses, todoListId: string) => void
     changeTaskTitle: (taskId: string, title: string, todoListId: string) => void
 }
 export const Task = React.memo((props: TaskPropsType) => {
 
-//удаление таски
-    const onRemoveHandler = () => {
+    /*---колбек удаления таски---*/
+    const onRemoveHandler = useCallback( () => {
         props.removeTask(props.tasks.id, props.id)
-    };
-//изменение значения checkbox (true \ false)
-    const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-        props.changeTaskStatus(props.tasks.id, e.currentTarget.checked, props.id)
-    };
-// изменение имени таски
-    const onChangeTitleHandler = (title: string) => {
+    }, [props.tasks.id, props.id]);
+
+    /*---колбек изменение значения checkbox (true\false)---*/
+    const onChangeHandler = useCallback( (e: ChangeEvent<HTMLInputElement>) => {
+        let newIsDoneValue = e.currentTarget.checked;
+        props.changeTaskStatus(props.tasks.id, newIsDoneValue ? TaskStatuses.Completed : TaskStatuses.New, props.id)
+    }, [props.tasks.id, props.id]);
+
+    /*---колбек изменение имени таски---*/
+    const onChangeTitleHandler = useCallback(  (title: string) => {
         props.changeTaskTitle(props.tasks.id, title, props.id)
-    };
+    }, [props.tasks.id, props.id])
 
 
     return (
         <div>
-            <li key={props.tasks.id} className={props.tasks.isDone ? 'done' : ''}>
-                <Checkbox checked={props.tasks.isDone}
+            <li key={props.tasks.id} className={props.tasks.status === TaskStatuses.Completed ? 'done' : ''}>
+                <Checkbox checked={props.tasks.status === TaskStatuses.Completed}
                           onChange={onChangeHandler}
                           size={"small"}
                 />

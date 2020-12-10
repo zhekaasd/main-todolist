@@ -11,13 +11,16 @@ type PropsType = {
     icon?: React.ReactNode;
 }
 
-export const AddItemForm = React.memo ( (props: PropsType) => {
+export const AddItemForm = React.memo((props: PropsType) => {
+
+    /*---title - локальный стейт для считывания данных из инпута---*/
+    /*---error - локальный стейт для работы с ошибками ошибки---*/
 
     let [title, setTitle] = useState("");
     let [error, setError] = useState<string | null>(null);
 
 
-    /*изменение значения поля ввода */
+    /*---изменение значения в инпуте и локальный сет этого значения---*/
     const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
         let newText = e.currentTarget.value;
         setTitle(newText);
@@ -26,7 +29,7 @@ export const AddItemForm = React.memo ( (props: PropsType) => {
         }
     }
 
-    /*добаление новых данных сочетанием клавиш*/
+    /*---добаление новых данных сочетанием клавиш "ctrl+enter"---*/
     const onKeyPressHandler = (e: KeyboardEvent<HTMLInputElement>) => {
         setError(null);
         if (e.ctrlKey && e.charCode === 13) {
@@ -34,7 +37,7 @@ export const AddItemForm = React.memo ( (props: PropsType) => {
         }
     }
 
-    /*добавление новых данных по клику*/
+    /*---добавление новых данных по клику с удалением лишних пробелов---*/
     const addTask = () => {
         if (title.trim() !== '') {
             props.addItem(title.trim());
@@ -45,12 +48,13 @@ export const AddItemForm = React.memo ( (props: PropsType) => {
         }
     }
 
+    /*---применение красной обводки---*/
     let cssErrorStyle = cn({
         [style.error]: error
     })
 
-    return(
-        <div style={ {display: "flex", marginBottom: '10px'} }>
+    return (
+        <div style={{display: "flex", marginBottom: '10px'}}>
             <TextField label={error ? "Error" : "Title"} variant="outlined" value={title}
                        onChange={onChangeHandler}
                        onKeyPress={onKeyPressHandler}
@@ -60,9 +64,7 @@ export const AddItemForm = React.memo ( (props: PropsType) => {
                        helperText={error}
             />
 
-            <ButtonComponent onClick={addTask} icon={props.icon} />
+            <ButtonComponent onClick={addTask} icon={props.icon}/>
         </div>
     )
-} );
-
-
+});

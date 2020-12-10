@@ -11,28 +11,28 @@ type PropsType = {
 
 export const EditableSpan = React.memo( (props: PropsType) => {
 
-//локальный стейт переключения между спаном и инпутом
+    /*---локальный стейт переключения между спаном и инпутом---*/
     let [editMode, setEditMode] = useState<boolean>(false);
     let [title, setTitle] = useState<string>(props.value);
 
-//активация редактирования имени таски
+    /*---активация режима редактирования имени таски---*/
     let activatedEditMode = () => {
         setEditMode(true);
         setTitle(props.value);
     }
 
-//деАктивация редактирования имени таски
+    /*---выход из режима редактирования имени таски без изменения значения---*/
     let deActivatedEditMode = () => {
         setEditMode(false);
         setTitle(props.value);
     }
 
-
-    const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
+    /*---считывание значения из инпута---*/
+    const onChangeTitle = (e: ChangeEvent<HTMLInputElement>) => {
         setTitle(e.currentTarget.value);
     }
 
-
+    /*---изменение значения такски по нажатию клавиш "ctrl+enter"---*/
     const onKeyPressHandler = (e: KeyboardEvent<HTMLInputElement>) => {
         if (e.ctrlKey && e.charCode === 13) {
             setEditMode(false);
@@ -41,7 +41,7 @@ export const EditableSpan = React.memo( (props: PropsType) => {
             // setTitle('');
         }
     }
-
+//изменение значения такси по двойному клику
     let onChangeTaskDoubleClick = () => {
         setEditMode(false);
         props.onChange(title);
@@ -54,10 +54,9 @@ export const EditableSpan = React.memo( (props: PropsType) => {
                    value={title}
                    onDoubleClick={onChangeTaskDoubleClick}
                    onBlur={deActivatedEditMode}
-                   onChange={onChangeHandler}
+                   onChange={onChangeTitle}
                    onKeyPress={onKeyPressHandler}
                    size={props.size}
         />
         : <span onDoubleClick={activatedEditMode}>{props.value}</span>
 } );
-
